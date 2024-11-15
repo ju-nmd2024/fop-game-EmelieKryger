@@ -6,8 +6,8 @@ function setup() {
 let x = 200;
 let y = 300;
 let state = "start";
-let gameTimer = 0;
 let gameWon = false;
+let speed = 2;
 
 // Function Screens
 function startScreen() {
@@ -16,6 +16,14 @@ function startScreen() {
 
 function gameScreen() {
   character(x, y);
+
+  // the if statement that moves the emoji back and forth
+  y = y + speed;
+  if (y > 600 || y < 300) {
+    speed = speed * -1;
+  } else if (y === 600) {
+    speed = 0;
+  }
 }
 
 function resultScreen() {}
@@ -362,25 +370,33 @@ function character() {
   house(x, y);
 }
 
-function mouseClicked() {
-  if (mouseX > 165 && mouseX < 400 && mouseY > 230 && mouseY < 360) {
-    console.log("Start");
-    state = "game";
-    /*     if (state === "start") {
-      state = "game";
-    } else if (state === "game") {
-      state = "result";
-    } else if (state === "result") {
-      state = "game";
-    } */
-  }
-}
+function end() {}
 
 function resultText(t) {
   // Text
   text(t, x + 35, y + 55, [100, 100]);
-  text(t, x - 94, y + (55)[(100, 100)]);
+  text(t, x - 54, y + (55)[(100, 100)]);
   textSize(30);
+}
+
+// The comands
+function mouseClicked() {
+  if (mouseX > 165 && mouseX < 400 && mouseY > 230 && mouseY < 360) {
+    console.log("start");
+    if (state === "start") {
+      state = "Play game";
+    } else if (state === "result") {
+      state = "start";
+    }
+  }
+}
+
+function keyPressed() {
+  // do something
+}
+
+function keyReleased() {
+  // do something
 }
 
 function draw() {
@@ -388,26 +404,25 @@ function draw() {
   scale(0.8);
 
   // If statements
-  //
+  // Screens
   if (state === "start") {
     startScreen();
-  } else if (state === "game") {
+  } else if (state === "Play game") {
     gameScreen();
-    gameTimer = gameTimer + 1;
-    if (gameTimer >= 100) {
-      gameTimer = 0;
-      state = "result";
-    }
   } else if (state === "result") {
     gameWon = true;
   }
 
   // Result
-  if (state) {
-    if (gameWon === false) {
+  if (state === "result") {
+    if (gameWon === true) {
+      resultText("You win, you're doing great honey");
+    } else if (gameWon === false) {
       resultText("You die, you suck");
-    } else if (gameWon === true) {
-      resultText("You win, your doing great honey");
     }
+  }
+
+  // Keys
+  if (keyIsDown) {
   }
 }
