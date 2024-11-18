@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(800, 700);
 }
 
 // Let
@@ -17,13 +17,15 @@ function startScreen() {
 function gameScreen() {
   character(x, y);
 
-  // the if statement that moves the emoji back and forth
+  // the if statement that moves the character upp and down
   y = y + speed;
   if (y > 600 || y < 300) {
     speed = speed * -1;
-  } else if (y === 600) {
+  } else if (y === 550) {
     speed = 0;
   }
+
+  background_character(x, y);
 }
 
 function resultScreen() {}
@@ -35,11 +37,12 @@ function button(x, y) {
   fill(153, 204, 255);
   stroke(102, 178, 255);
   strokeWeight(4);
-  rect(x - 170, y - 100, 290, 160);
+  rect(x - 20, y - 45, 290, 160);
   pop();
 
   // The balloon
   push();
+  translate(150, 50);
   fill(255, 153, 204);
   noStroke();
   beginShape();
@@ -50,6 +53,7 @@ function button(x, y) {
 
   // The string
   push();
+  translate(150, 50);
   noFill();
   beginShape();
   vertex(x - 109, y + 9);
@@ -58,7 +62,7 @@ function button(x, y) {
   pop();
 
   // Text
-  text("Click here", x - 55, y - 35, [100, 100]);
+  text("Play Game", x + 90, y + 10, [100, 100]);
   textSize(30);
 }
 
@@ -293,15 +297,16 @@ function character() {
   }
 
   function balloon(balloonX, balloonY, angle, fillColor, strokeColor) {
-    // 246 and 247, got help from a secondyear NMD student
     push();
     fill(fillColor);
     stroke(strokeColor);
     translate(balloonX, balloonY);
     rotate(angle);
     beginShape();
+    //Start help, got help from a secondyear NMD student
     vertex(0, 0);
     bezierVertex(-101, -105, +99, -105, 0, 0);
+    //End help, got help from a secondyear NMD student
     endShape();
     pop();
 
@@ -370,6 +375,76 @@ function character() {
   house(x, y);
 }
 
+function background_character() {
+  function cloud() {
+    push();
+    fill(255, 255, 255);
+    noStroke();
+    ellipse(x, y, 120, 80);
+    ellipse(x - 20, y - 40, 120, 80);
+    ellipse(x - 80, y - 10, 120, 80);
+    ellipse(x + 70, y - 25, 120, 80);
+    ellipse(x + 35, y - 60, 120, 80);
+    ellipse(x + 135, y - 10, 120, 80);
+    ellipse(x - 180, y - 30, 120, 80);
+    ellipse(x - 130, y - 60, 120, 80);
+    ellipse(x - 30, y - 70, 120, 80);
+    ellipse(x + 110, y - 60, 120, 80);
+    ellipse(x + 40, y - 60, 120, 80);
+    ellipse(x + 190, y - 35, 120, 80);
+    pop();
+  }
+
+  function gate() {
+    // Lines
+    push();
+    stroke(255, 255, 255);
+    strokeWeight(3);
+    for (let i = 0; i < 15; i++) {
+      // Left
+      line(x - 200 + i * 10, y - 50, x - 200 + i * 10, y - 150 - i * 5);
+      // Right
+      line(x + 210 - i * 10, y - 50, x + 210 - i * 10, y - 150 - i * 5);
+    }
+    // Left line, diagonal
+    line(x - 200, y - 125, x - 60, y - 195);
+    // Right line, diagonal
+    line(x + 70, y - 195, x + 210, y - 125);
+    pop();
+
+    // The actual gate, from left to right
+    push();
+    fill(255, 255, 255);
+    noStroke();
+    quad(x - 53, y - 200, x - 28, y - 212, x - 28, y - 90, x - 53, y - 90);
+
+    beginShape();
+    vertex(x + 1, y - 200);
+    vertex(x + 1, y - 90);
+    vertex(x - 22, y - 90);
+    vertex(x - 22, y - 215);
+    vertex(x - 6, y - 224);
+    bezierVertex(x - 19, y - 205, x, y - 200, x, y - 200);
+    endShape();
+
+    beginShape();
+    vertex(x + 7, y - 200);
+    vertex(x + 7, y - 90);
+    vertex(x + 32, y - 90);
+    vertex(x + 32, y - 215);
+    vertex(x + 15, y - 225);
+    bezierVertex(x + 23, y - 221, x + 23, y - 200, x + 7, y - 200);
+    endShape();
+
+    quad(x + 63, y - 198, x + 38, y - 212, x + 38, y - 90, x + 63, y - 90);
+    pop();
+  }
+
+  // Calling cloud and gate
+  cloud(x, y);
+  gate(x, y);
+}
+
 function end() {}
 
 function resultText(t) {
@@ -381,7 +456,7 @@ function resultText(t) {
 
 // The comands
 function mouseClicked() {
-  if (mouseX > 165 && mouseX < 400 && mouseY > 230 && mouseY < 360) {
+  if (mouseX > 290 && mouseX < 520 && mouseY > 275 && mouseY < 405) {
     console.log("start");
     if (state === "start") {
       state = "Play game";
@@ -392,7 +467,9 @@ function mouseClicked() {
 }
 
 function keyPressed() {
-  // do something
+  if (key === "38") {
+    // the house shound go up or slow down
+  }
 }
 
 function keyReleased() {
