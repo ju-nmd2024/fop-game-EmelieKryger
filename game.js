@@ -5,13 +5,17 @@ function setup() {
 // Let
 let x = 200;
 let y = 300;
+let buttonX = 200;
+let buttonY = 300;
+let houseX = 200;
+let houseY = 300;
 let state = "start";
 let gameWon = false;
 let speed = 2;
 
 // Function Screens
 function startScreen() {
-  button(x + 180, y + 90);
+  button(buttonX + 180, buttonY + 90);
 }
 
 function gameScreen() {
@@ -19,16 +23,23 @@ function gameScreen() {
 
   // the if statement that moves the character upp and down
   y = y + speed;
-  if (y > 600 || y < 300) {
-    speed = speed * -1;
-  } else if (y === 550) {
+  if (y === 560) {
     speed = 0;
   }
 
-  background_character(x, y);
+  background_character(500, 800);
 }
 
-function resultScreen() {}
+function resultScreen() {
+  // Result
+  if (state === "result") {
+    if (gameWon === true) {
+      resultText("You win, you're doing great honey");
+    } else if (gameWon === false) {
+      resultText("You die, you suck");
+    }
+  }
+}
 
 // Functions inside the screens
 function button(x, y) {
@@ -67,57 +78,82 @@ function button(x, y) {
 }
 
 function character() {
-  function house(x, y) {
+  function house(houseX, houseY) {
     // The left side
     push();
     fill(102, 178, 255);
     noStroke();
-    rect(x - 85, y + 45, 100, 35);
+    rect(houseX - 85, houseY + 45, 100, 35);
     pop();
 
     push();
     fill(255, 128, 0);
     noStroke();
-    rect(x - 85, y + 80, 100, 55);
+    rect(houseX - 85, houseY + 80, 100, 55);
     pop();
 
     push();
     fill(102, 178, 255);
     noStroke();
-    rect(x - 85, y + 135, 100, 20);
+    rect(houseX - 85, houseY + 135, 100, 20);
     pop();
 
     // The right side
     push();
     fill(255, 153, 204);
     noStroke();
-    rect(x + 110, y + 40, 40, 115);
-    triangle(x + 150, y + 85, x + 150, y + 65, x + 160, y + 75);
+    rect(houseX + 110, houseY + 40, 40, 115);
+    triangle(
+      houseX + 150,
+      houseY + 85,
+      houseX + 150,
+      houseY + 65,
+      houseX + 160,
+      houseY + 75
+    );
     pop();
 
     // Details on the left side, horizontal
     push();
     noStroke();
     fill(255, 255, 255);
-    rect(x - 82, y + 78, 100, 2);
-    rect(x - 82, y + 90, 100, 2);
-    rect(x - 80, y + 135, 30, 2);
-    rect(x - 80, y + 115, 30, 2);
-    rect(x - 50, y + 135, 65, 2);
+    rect(houseX - 82, houseY + 78, 100, 2);
+    rect(houseX - 82, houseY + 90, 100, 2);
+    rect(houseX - 80, houseY + 135, 30, 2);
+    rect(houseX - 80, houseY + 115, 30, 2);
+    rect(houseX - 50, houseY + 135, 65, 2);
     pop();
 
     // The roof, right side
     push();
     fill(253, 52, 52);
     noStroke();
-    quad(x + 75, y - 5, x + 115, y + 45, x + 165, y + 45, x + 165, y - 5);
+    quad(
+      houseX + 75,
+      houseY - 5,
+      houseX + 115,
+      houseY + 45,
+      houseX + 165,
+      houseY + 45,
+      houseX + 165,
+      houseY - 5
+    );
     pop();
 
     // The roof, left side
     push();
     fill(253, 52, 52);
     noStroke();
-    quad(x - 100, y, x + 37, y, x, y + 57, x - 100, y + 57);
+    quad(
+      houseX - 100,
+      houseY,
+      houseX + 37,
+      houseY,
+      houseX,
+      houseY + 57,
+      houseX - 100,
+      houseY + 57
+    );
     pop();
 
     // The big extension
@@ -125,38 +161,81 @@ function character() {
     push();
     fill(253, 220, 52);
     noStroke();
-    triangle(x + 8, y + 45, x + 56, y - 30, x + 115, y + 45);
-    rect(x + 8, y + 45, 107, 20);
+    triangle(
+      houseX + 8,
+      houseY + 45,
+      houseX + 56,
+      houseY - 30,
+      houseX + 115,
+      houseY + 45
+    );
+    rect(houseX + 8, houseY + 45, 107, 20);
     pop();
 
     push();
     fill(253, 220, 52);
     stroke(255, 255, 204);
-    quad(x + 8, y + 65, x + 115, y + 65, x + 125, y + 75, x - 2, y + 75);
-    quad(x - 2, y + 75, x + 125, y + 75, x + 115, y + 85, x + 8, y + 85);
+    quad(
+      houseX + 8,
+      houseY + 65,
+      houseX + 115,
+      houseY + 65,
+      houseX + 125,
+      houseY + 75,
+      houseX - 2,
+      houseY + 75
+    );
+    quad(
+      houseX - 2,
+      houseY + 75,
+      houseX + 125,
+      houseY + 75,
+      houseX + 115,
+      houseY + 85,
+      houseX + 8,
+      houseY + 85
+    );
     pop();
 
     // The window
     push();
     fill(255, 255, 255);
     noStroke();
-    rect(x + 42, y + 10, 36, 50);
+    rect(houseX + 42, houseY + 10, 36, 50);
     pop();
 
     push();
     fill(0, 0, 0);
     stroke(255, 153, 204);
     strokeWeight(3);
-    rect(x + 48, y + 15, 25, 40);
-    line(x + 48, y + 35, x + 72, y + 35);
+    rect(houseX + 48, houseY + 15, 25, 40);
+    line(houseX + 48, houseY + 35, houseX + 72, houseY + 35);
     pop();
 
     // The engled roof
     push();
     fill(102, 178, 255);
     stroke(0, 128, 255);
-    quad(x - 10, y + 57, x, y + 57, x + 59, y - 25, x + 60, y - 40);
-    quad(x + 120, y + 57, x + 60, y - 25, x + 61, y - 41, x + 130, y + 57);
+    quad(
+      houseX - 10,
+      houseY + 57,
+      houseX,
+      houseY + 57,
+      houseX + 59,
+      houseY - 25,
+      houseX + 60,
+      houseY - 40
+    );
+    quad(
+      houseX + 120,
+      houseY + 57,
+      houseX + 60,
+      houseY - 25,
+      houseX + 61,
+      houseY - 41,
+      houseX + 130,
+      houseY + 57
+    );
     pop();
 
     // The little extension
@@ -164,81 +243,124 @@ function character() {
     push();
     fill(255, 128, 0);
     noStroke();
-    triangle(x - 64, y + 25, x - 46, y + 15, x - 25, y + 25);
-    rect(x - 64, y + 25, 39, 20);
+    triangle(
+      houseX - 64,
+      houseY + 25,
+      houseX - 46,
+      houseY + 15,
+      houseX - 25,
+      houseY + 25
+    );
+    rect(houseX - 64, houseY + 25, 39, 20);
     pop();
 
     // The window
     push();
     fill(255, 255, 255);
     noStroke();
-    rect(x - 53, y + 24, 15, 18);
+    rect(houseX - 53, houseY + 24, 15, 18);
     pop();
 
     push();
     fill(0, 0, 0);
     stroke(255, 153, 204);
     strokeWeight(2);
-    rect(x - 49.5, y + 27, 8, 12);
-    line(x - 49, y + 33, x - 42, y + 33);
+    rect(houseX - 49.5, houseY + 27, 8, 12);
+    line(houseX - 49, houseY + 33, houseX - 42, houseY + 33);
     pop();
 
     // The angled roof
     push();
     fill(102, 178, 255);
     stroke(0, 128, 204);
-    quad(x - 79, y + 30, x - 46, y + 7, x - 46, y + 15, x - 70, y + 30);
-    quad(x - 46, y + 15, x - 46, y + 7, x - 10, y + 30, x - 20, y + 30);
+    quad(
+      houseX - 79,
+      houseY + 30,
+      houseX - 46,
+      houseY + 7,
+      houseX - 46,
+      houseY + 15,
+      houseX - 70,
+      houseY + 30
+    );
+    quad(
+      houseX - 46,
+      houseY + 15,
+      houseX - 46,
+      houseY + 7,
+      houseX - 10,
+      houseY + 30,
+      houseX - 20,
+      houseY + 30
+    );
     pop();
 
     // The front under the big extension
     push();
     fill(204, 255, 153);
     stroke(178, 255, 102);
-    quad(x + 8, y + 86, x + 42, y + 86, x + 42, y + 166, x + 8, y + 155);
-    rect(x + 43, y + 86, 35, 80);
-    quad(x + 79, y + 86, x + 115, y + 86, x + 115, y + 155, x + 79, y + 166);
+    quad(
+      houseX + 8,
+      houseY + 86,
+      houseX + 42,
+      houseY + 86,
+      houseX + 42,
+      houseY + 166,
+      houseX + 8,
+      houseY + 155
+    );
+    rect(houseX + 43, houseY + 86, 35, 80);
+    quad(
+      houseX + 79,
+      houseY + 86,
+      houseX + 115,
+      houseY + 86,
+      houseX + 115,
+      houseY + 155,
+      houseX + 79,
+      houseY + 166
+    );
     pop();
 
     // Details on the left side, vertical
     push();
     fill(255, 255, 255);
     noStroke();
-    rect(x - 85, y + 57, 10, 98);
-    rect(x - 52, y + 57, 8, 98);
-    rect(x - 69, y + 117, 2, 20);
-    rect(x - 60, y + 117, 2, 20);
-    rect(x - 69, y + 80, 2, 10);
-    rect(x - 60, y + 80, 2, 10);
-    rect(x - 38, y + 80, 2, 10);
-    rect(x - 29, y + 80, 2, 10);
-    rect(x - 20, y + 80, 2, 10);
-    rect(x - 11, y + 80, 2, 10);
-    rect(x - 2, y + 80, 2, 10);
+    rect(houseX - 85, houseY + 57, 10, 98);
+    rect(houseX - 52, houseY + 57, 8, 98);
+    rect(houseX - 69, houseY + 117, 2, 20);
+    rect(houseX - 60, houseY + 117, 2, 20);
+    rect(houseX - 69, houseY + 80, 2, 10);
+    rect(houseX - 60, houseY + 80, 2, 10);
+    rect(houseX - 38, houseY + 80, 2, 10);
+    rect(houseX - 29, houseY + 80, 2, 10);
+    rect(houseX - 20, houseY + 80, 2, 10);
+    rect(houseX - 11, houseY + 80, 2, 10);
+    rect(houseX - 2, houseY + 80, 2, 10);
     pop();
 
     // The stairs
     push();
     fill(255, 255, 255);
     noStroke();
-    rect(x - 35, y + 135, 2, 24);
-    rect(x - 4, y + 135, 2, 24);
-    rect(x - 35, y + 141, 33, 4);
-    rect(x - 35, y + 148, 33, 4);
-    rect(x - 35, y + 155, 33, 4);
+    rect(houseX - 35, houseY + 135, 2, 24);
+    rect(houseX - 4, houseY + 135, 2, 24);
+    rect(houseX - 35, houseY + 141, 33, 4);
+    rect(houseX - 35, houseY + 148, 33, 4);
+    rect(houseX - 35, houseY + 155, 33, 4);
     pop();
 
     // The door
     push();
     fill(100, 60, 34);
     noStroke();
-    rect(x - 31, y + 100, 25, 35);
+    rect(houseX - 31, houseY + 100, 25, 35);
     pop();
 
     // The door handle
     push();
     fill(0, 0, 0);
-    ellipse(x - 13, y + 120, 5);
+    ellipse(houseX - 13, houseY + 120, 5);
     pop();
 
     // The windows, front under the big extension
@@ -246,53 +368,90 @@ function character() {
     push();
     fill(255, 255, 255);
     noStroke();
-    rect(x + 48, y + 100, 25, 40);
+    rect(houseX + 48, houseY + 100, 25, 40);
     pop();
 
     push();
     fill(0, 0, 0);
     stroke(255, 153, 204);
     strokeWeight(3);
-    rect(x + 53, y + 105, 15, 30);
-    line(x + 55, y + 120, x + 68, y + 120);
+    rect(houseX + 53, houseY + 105, 15, 30);
+    line(houseX + 55, houseY + 120, houseX + 68, houseY + 120);
     pop();
 
     // The left
     push();
     fill(255, 255, 255);
     noStroke();
-    quad(x + 35, y + 100, x + 35, y + 138, x + 15, y + 130, x + 15, y + 96);
+    quad(
+      houseX + 35,
+      houseY + 100,
+      houseX + 35,
+      houseY + 138,
+      houseX + 15,
+      houseY + 130,
+      houseX + 15,
+      houseY + 96
+    );
     pop();
 
     push();
     fill(0, 0, 0);
     stroke(255, 153, 204);
     strokeWeight(3);
-    quad(x + 30, y + 105, x + 30, y + 130, x + 20, y + 126, x + 20, y + 103);
-    line(x + 20, y + 115, x + 29, y + 118);
+    quad(
+      houseX + 30,
+      houseY + 105,
+      houseX + 30,
+      houseY + 130,
+      houseX + 20,
+      houseY + 126,
+      houseX + 20,
+      houseY + 103
+    );
+    line(houseX + 20, houseY + 115, houseX + 29, houseY + 118);
     pop();
 
     // The right
     push();
     fill(255, 255, 255);
     noStroke();
-    quad(x + 87, y + 100, x + 87, y + 138, x + 108, y + 130, x + 108, y + 96);
+    quad(
+      houseX + 87,
+      houseY + 100,
+      houseX + 87,
+      houseY + 138,
+      houseX + 108,
+      houseY + 130,
+      houseX + 108,
+      houseY + 96
+    );
     pop();
 
     push();
     fill(0, 0, 0);
     stroke(255, 153, 204);
     strokeWeight(3);
-    quad(x + 93, y + 105, x + 93, y + 130, x + 102, y + 126, x + 102, y + 103);
-    line(x + 100, y + 115, x + 93, y + 118);
+    quad(
+      houseX + 93,
+      houseY + 105,
+      houseX + 93,
+      houseY + 130,
+      houseX + 102,
+      houseY + 126,
+      houseX + 102,
+      houseY + 103
+    );
+    line(houseX + 100, houseY + 115, houseX + 93, houseY + 118);
     pop();
 
     // The chimney
     push();
     fill(100, 60, 34);
     noStroke();
-    rect(x - 10, y - 40, 20, 50);
-    rect(x - 14, y - 40, 28, 10);
+    rect(houseX - 10, houseY - 40, 20, 50);
+    rect(houseX - 14, houseY - 40, 28, 10);
+    pop();
     pop();
   }
 
@@ -372,10 +531,10 @@ function character() {
   balloon(x + 20, y - 105, 0.2, color(255, 153, 204), color(255, 162, 170));
 
   // Calling the house
-  house(x, y);
+  house(x + 270, y);
 }
 
-function background_character() {
+function background_character(x, y) {
   function cloud() {
     push();
     fill(255, 255, 255);
@@ -396,6 +555,9 @@ function background_character() {
   }
 
   function gate() {
+    push();
+    scale(1, 0.6);
+    translate(0, 480);
     // Lines
     push();
     stroke(255, 255, 255);
@@ -419,15 +581,6 @@ function background_character() {
     quad(x - 53, y - 200, x - 28, y - 212, x - 28, y - 90, x - 53, y - 90);
 
     beginShape();
-    vertex(x + 1, y - 200);
-    vertex(x + 1, y - 90);
-    vertex(x - 22, y - 90);
-    vertex(x - 22, y - 215);
-    vertex(x - 6, y - 224);
-    bezierVertex(x - 19, y - 205, x, y - 200, x, y - 200);
-    endShape();
-
-    beginShape();
     vertex(x + 7, y - 200);
     vertex(x + 7, y - 90);
     vertex(x + 32, y - 90);
@@ -436,7 +589,21 @@ function background_character() {
     bezierVertex(x + 23, y - 221, x + 23, y - 200, x + 7, y - 200);
     endShape();
 
-    quad(x + 63, y - 198, x + 38, y - 212, x + 38, y - 90, x + 63, y - 90);
+    push();
+    scale(-1, 1);
+    translate(x - 1509, 0);
+    beginShape();
+    vertex(x + 7, y - 200);
+    vertex(x + 7, y - 90);
+    vertex(x + 32, y - 90);
+    vertex(x + 32, y - 215);
+    vertex(x + 15, y - 225);
+    bezierVertex(x + 23, y - 221, x + 23, y - 200, x + 7, y - 200);
+    endShape();
+    pop();
+
+    quad(x + 63, y - 198, x + 37, y - 212, x + 37, y - 90, x + 63, y - 90);
+    pop();
     pop();
   }
 
@@ -491,13 +658,7 @@ function draw() {
   }
 
   // Result
-  if (state === "result") {
-    if (gameWon === true) {
-      resultText("You win, you're doing great honey");
-    } else if (gameWon === false) {
-      resultText("You die, you suck");
-    }
-  }
+  resultScreen();
 
   // Keys
   if (keyIsDown) {
