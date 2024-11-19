@@ -1,18 +1,26 @@
-function setup() {
-  createCanvas(800, 700);
-}
+// Game - let the house land on the cloud
+// Emelie Kryger - krem24oj
 
-// Let
+// Varibles
 let x = 200;
 let y = 300;
 let buttonX = 200;
 let buttonY = 300;
+let replayButtonX = 200;
+let replayButtonY = 300;
 let houseX = 200;
 let houseY = 300;
 let state = "start";
 let gameWon = false;
 let speed = 2;
 
+//Game logic varibles
+let velocityY = 1;
+let acceleration = 1;
+
+function setup() {
+  createCanvas(800, 700);
+}
 // Function Screens
 function startScreen() {
   button(buttonX + 180, buttonY + 90);
@@ -39,6 +47,10 @@ function resultScreen() {
       resultText("You die, you suck");
     }
   }
+}
+
+function replayScreen() {
+  replayButton(replayButtonX + 180, replayButtonY + 90);
 }
 
 // Functions inside the screens
@@ -74,6 +86,20 @@ function button(x, y) {
 
   // Text
   text("Play Game", x + 90, y + 10, [100, 100]);
+  textSize(30);
+}
+
+function replayButton(x, y) {
+  // The button
+  push();
+  fill(153, 204, 255);
+  stroke(102, 178, 255);
+  strokeWeight(4);
+  rect(x - 20, y - 45, 290, 160);
+  pop();
+
+  // Text
+  text("Restart Game", x + 90, y + 10, [100, 100]);
   textSize(30);
 }
 
@@ -452,7 +478,6 @@ function character() {
     rect(houseX - 10, houseY - 40, 20, 50);
     rect(houseX - 14, houseY - 40, 28, 10);
     pop();
-    pop();
   }
 
   function balloon(balloonX, balloonY, angle, fillColor, strokeColor) {
@@ -476,6 +501,8 @@ function character() {
   }
 
   // Calling the balloons
+  push();
+  translate(270, 0);
   // Orange left
   balloon(x - 10, y - 175, 0.2, color(255, 204, 153), color(255, 204, 153));
 
@@ -529,6 +556,7 @@ function character() {
 
   // Pink right
   balloon(x + 20, y - 105, 0.2, color(255, 153, 204), color(255, 162, 170));
+  pop();
 
   // Calling the house
   house(x + 270, y);
@@ -612,8 +640,6 @@ function background_character(x, y) {
   gate(x, y);
 }
 
-function end() {}
-
 function resultText(t) {
   // Text
   text(t, x + 35, y + 55, [100, 100]);
@@ -634,13 +660,13 @@ function mouseClicked() {
 }
 
 function keyPressed() {
+  console.log("Key " + keyCode + " has been pressed");
   if (key === "38") {
-    // the house shound go up or slow down
   }
 }
 
 function keyReleased() {
-  // do something
+  console.log("Key " + keyCode + " has been released");
 }
 
 function draw() {
@@ -648,19 +674,26 @@ function draw() {
   scale(0.8);
 
   // If statements
-  // Screens
+  // Start
   if (state === "start") {
     startScreen();
   } else if (state === "Play game") {
     gameScreen();
-  } else if (state === "result") {
-    gameWon = true;
   }
 
-  // Result
-  resultScreen();
+  // // Result
+  // resultScreen();
 
-  // Keys
-  if (keyIsDown) {
+  // Gravity logic house
+  houseY = houseY + velocityY;
+  velocityY = velocityY + acceleration;
+
+  // ArrowUp - controls the accelaration
+  if (keyIsDown(38) === true) {
+    acceleration = -1;
+  } else {
+    acceleration = 0.5;
+    // } else if (state === "result") {
+    //   gameWon = true;
   }
 }
