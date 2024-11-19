@@ -6,17 +6,14 @@ let x = 200;
 let y = 300;
 let buttonX = 200;
 let buttonY = 300;
-let replayButtonX = 200;
-let replayButtonY = 300;
 let houseX = 200;
 let houseY = 300;
 let state = "start";
 let gameWon = false;
-let speed = 2;
 
 //Game logic varibles
-let velocityY = 1;
-let acceleration = 1;
+let velocityY = 3;
+let acceleration = 0.5;
 
 function setup() {
   createCanvas(800, 700);
@@ -29,10 +26,30 @@ function startScreen() {
 function gameScreen() {
   character(x, y);
 
-  // the if statement that moves the character upp and down
-  y = y + speed;
-  if (y === 560) {
-    speed = 0;
+  // The if statement that moves the character upp and down
+  if (houseY > 560) {
+    velocityY = 0;
+  }
+
+  // Gravity logic house
+  houseY = houseY + velocityY;
+  velocityY = velocityY + acceleration;
+
+  // ArrowUp - controls the accelaration
+  if (keyIsDown(38) === true) {
+    acceleration = -0.15;
+  } else {
+    acceleration = 0.1;
+  }
+
+  // Game over
+  if (houseY >= 560) {
+    if (velocityY <= 3) {
+      gameWon = true;
+    } else if (velocityY > 3) {
+      gameWon = false;
+    }
+    state = "result";
   }
 
   background_character(500, 800);
@@ -40,17 +57,18 @@ function gameScreen() {
 
 function resultScreen() {
   // Result
-  if (state === "result") {
-    if (gameWon === true) {
-      resultText("You win, you're doing great honey");
-    } else if (gameWon === false) {
-      resultText("You die, you suck");
-    }
+  if (gameWon === true) {
+    resultText("You win, you're doing great honey");
+  } else if (gameWon === false) {
+    resultText("You die, you suck");
+    replayButton();
   }
 }
 
-function replayScreen() {
-  replayButton(replayButtonX + 180, replayButtonY + 90);
+function resetGame() {
+  houseY = 0;
+  velocityY = 0;
+  acceleration = 0.1;
 }
 
 // Functions inside the screens
@@ -89,18 +107,30 @@ function button(x, y) {
   textSize(30);
 }
 
-function replayButton(x, y) {
+function replayButton() {
   // The button
   push();
   fill(153, 204, 255);
   stroke(102, 178, 255);
   strokeWeight(4);
-  rect(x - 20, y - 45, 290, 160);
+  rect(500 - 150, 395, 300, 160);
   pop();
 
   // Text
-  text("Restart Game", x + 90, y + 10, [100, 100]);
+  textAlign(CENTER);
+  text("Restart game", 500, 482);
   textSize(30);
+
+  if (
+    mouseIsPressed &&
+    mouseX > 280 &&
+    mouseX < 520 &&
+    mouseY > 315 &&
+    mouseY < 445
+  ) {
+    state = "Play game";
+    resetGame();
+  }
 }
 
 function character() {
@@ -496,7 +526,7 @@ function character() {
 
     push();
     stroke(0, 0, 0);
-    line(x, y - 35, balloonX, balloonY);
+    line(x, houseY - 35, balloonX, balloonY);
     pop();
   }
 
@@ -504,42 +534,66 @@ function character() {
   push();
   translate(270, 0);
   // Orange left
-  balloon(x - 10, y - 175, 0.2, color(255, 204, 153), color(255, 204, 153));
+  balloon(
+    houseX - 10,
+    houseY - 175,
+    0.2,
+    color(255, 204, 153),
+    color(255, 204, 153)
+  );
 
   // Orange right
   balloon(
-    x + 50,
-    y + 45 - 175,
+    houseX + 50,
+    houseY + 45 - 175,
     0.3,
     color(255, 204, 153),
     color(255, 204, 153)
   );
 
   // Green left
-  balloon(x, y - 75, 0, color(153, 255, 153), color(102, 255, 102));
+  balloon(houseX, houseY - 75, 0, color(153, 255, 153), color(102, 255, 102));
 
   // Green right
-  balloon(x + 30, y - 150, 0.2, color(153, 255, 153), color(102, 255, 102));
+  balloon(
+    houseX + 30,
+    houseY - 150,
+    0.2,
+    color(153, 255, 153),
+    color(102, 255, 102)
+  );
 
   // Blue right
   balloon(
-    x + 50,
-    y + 80 - 175,
+    houseX + 50,
+    houseY + 80 - 175,
     0.6,
     color(153, 204, 255),
     color(102, 178, 255)
   );
 
   // Blue left
-  balloon(x - 10, y + 50 - 175, 0, color(153, 204, 255), color(102, 178, 255));
+  balloon(
+    houseX - 10,
+    houseY + 50 - 175,
+    0,
+    color(153, 204, 255),
+    color(102, 178, 255)
+  );
 
   // Yellow right
-  balloon(x + 20, y - 75, 0.6, color(255, 255, 153), color(255, 255, 102));
+  balloon(
+    houseX + 20,
+    houseY - 75,
+    0.6,
+    color(255, 255, 153),
+    color(255, 255, 102)
+  );
 
   // Yellow left
   balloon(
-    x - 30,
-    y - 5 - 135,
+    houseX - 30,
+    houseY - 140,
     -0.3,
     color(255, 255, 153),
     color(255, 255, 102)
@@ -547,19 +601,25 @@ function character() {
 
   // Pink left
   balloon(
-    x - 20,
-    y + 90 - 175,
+    houseX - 20,
+    houseY + 90 - 175,
     -0.6,
     color(255, 153, 204),
     color(255, 162, 170)
   );
 
   // Pink right
-  balloon(x + 20, y - 105, 0.2, color(255, 153, 204), color(255, 162, 170));
+  balloon(
+    houseX + 20,
+    houseY - 105,
+    0.2,
+    color(255, 153, 204),
+    color(255, 162, 170)
+  );
   pop();
 
   // Calling the house
-  house(x + 270, y);
+  house(houseX + 270, houseY);
 }
 
 function background_character(x, y) {
@@ -642,9 +702,9 @@ function background_character(x, y) {
 
 function resultText(t) {
   // Text
-  text(t, x + 35, y + 55, [100, 100]);
-  text(t, x - 54, y + (55)[(100, 100)]);
+  textAlign(CENTER);
   textSize(30);
+  text(t, 500, 330);
 }
 
 // The comands
@@ -654,7 +714,7 @@ function mouseClicked() {
     if (state === "start") {
       state = "Play game";
     } else if (state === "result") {
-      state = "start";
+      state = "Restart game";
     }
   }
 }
@@ -679,21 +739,9 @@ function draw() {
     startScreen();
   } else if (state === "Play game") {
     gameScreen();
-  }
-
-  // // Result
-  // resultScreen();
-
-  // Gravity logic house
-  houseY = houseY + velocityY;
-  velocityY = velocityY + acceleration;
-
-  // ArrowUp - controls the accelaration
-  if (keyIsDown(38) === true) {
-    acceleration = -1;
-  } else {
-    acceleration = 0.5;
-    // } else if (state === "result") {
-    //   gameWon = true;
+  } else if (state === "result") {
+    resultScreen();
+  } else if (state === "game") {
+    resetGame();
   }
 }
