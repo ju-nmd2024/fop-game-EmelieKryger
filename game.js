@@ -78,9 +78,9 @@ function resultScreen() {
 }
 
 function resetGame() {
-  houseY = 0;
-  velocityY = 0;
-  acceleration = 0.1;
+  houseY = 300;
+  velocityY = 3;
+  acceleration = 0.5;
   winningScreenTimer = 0;
 }
 
