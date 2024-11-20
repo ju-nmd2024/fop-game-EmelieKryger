@@ -10,6 +10,7 @@ let houseX = 200;
 let houseY = 300;
 let state = "start";
 let gameWon = false;
+let winningScreenTimer = 0;
 
 //Game logic varibles
 let velocityY = 3;
@@ -59,6 +60,11 @@ function resultScreen() {
   // Result
   if (gameWon === true) {
     resultText("You win, you're doing great honey");
+    winningScreenTimer = winningScreenTimer + 1;
+    if (winningScreenTimer > 50) {
+      state = "start";
+      resetGame();
+    }
   } else if (gameWon === false) {
     resultText("You die, you suck");
     replayButton();
@@ -69,6 +75,7 @@ function resetGame() {
   houseY = 0;
   velocityY = 0;
   acceleration = 0.1;
+  winningScreenTimer = 0;
 }
 
 // Functions inside the screens
@@ -103,8 +110,9 @@ function button(x, y) {
   pop();
 
   // Text
-  text("Play Game", x + 90, y + 10, [100, 100]);
+  fill(0, 0, 0);
   textSize(30);
+  text("Play Game", x + 90, y + 10, [100, 100]);
 }
 
 function replayButton() {
@@ -118,8 +126,8 @@ function replayButton() {
 
   // Text
   textAlign(CENTER);
-  text("Restart game", 500, 482);
   textSize(30);
+  text("Restart game", 500, 482);
 
   if (
     mouseIsPressed &&
@@ -704,7 +712,7 @@ function resultText(t) {
   // Text
   textAlign(CENTER);
   textSize(30);
-  text(t, 500, 330);
+  text(t, 500, 350);
 }
 
 // The comands
@@ -713,8 +721,8 @@ function mouseClicked() {
     console.log("start");
     if (state === "start") {
       state = "Play game";
-    } else if (state === "result") {
-      state = "Restart game";
+    } else if (state === "result" && gameWon === true) {
+      state = "start";
     }
   }
 }
@@ -730,6 +738,7 @@ function keyReleased() {
 }
 
 function draw() {
+  push();
   background(193, 204, 255);
   scale(0.8);
 
@@ -744,4 +753,5 @@ function draw() {
   } else if (state === "game") {
     resetGame();
   }
+  pop();
 }
