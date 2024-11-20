@@ -22,6 +22,12 @@ function setup() {
 // Function Screens
 function startScreen() {
   button(buttonX + 180, buttonY + 90);
+
+  // Instruction for the user
+  textAlign(CENTER);
+  textSize(30);
+  text("To steer the house, use the space key", 510, 600);
+  text("Good Luck", 505, 650);
 }
 
 function gameScreen() {
@@ -36,8 +42,8 @@ function gameScreen() {
   houseY = houseY + velocityY;
   velocityY = velocityY + acceleration;
 
-  // ArrowUp - controls the accelaration
-  if (keyIsDown(38) === true) {
+  // Space key - controls the accelaration
+  if (keyIsDown(32) === true) {
     acceleration = -0.15;
   } else {
     acceleration = 0.1;
@@ -729,7 +735,7 @@ function mouseClicked() {
 
 function keyPressed() {
   console.log("Key " + keyCode + " has been pressed");
-  if (key === "38") {
+  if (key === "32") {
   }
 }
 
@@ -750,7 +756,7 @@ function draw() {
     gameScreen();
   } else if (state === "result") {
     resultScreen();
-  } else if (state === "game") {
+  } else if (state === "reset") {
     resetGame();
   }
   pop();
